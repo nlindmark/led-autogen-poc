@@ -41,7 +41,6 @@ python sim/run.py
 
 ## Repo Layout
 
-
 ├── schema/                # YAML schemas (function, etc.)
 ├── specs/                 # Module specs (*.spec.yml)
 ├── templates/             # Jinja2 templates for C, headers, CI
@@ -49,6 +48,8 @@ python sim/run.py
 ├── sim/                   # Python “hardware” simulator
 ├── generated/             # Auto-generated C code (do not edit)
 └── .github/workflows/ci.yml
+
+
 
 ## Development Workflow
 
