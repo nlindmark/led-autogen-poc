@@ -1,0 +1,9 @@
+#include "{{ module.name }}.h"
+static int LED_STATE = 0;          /* 0 = off */
+
+void {{ functions[0].name }}(int {{ functions[0].inputs[0] }})
+{
+    if ({{ functions[0].inputs[0] }}) {
+        LED_STATE ^= 1;            /* toggle */
+    }
+}

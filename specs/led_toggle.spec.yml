@@ -1,0 +1,6 @@
+module:
+  name: led
+  language: c         # Target language
+functions:
+  - name: led_toggle
+    inputs: [button_pressed]   # Boolean “1 = pressed”

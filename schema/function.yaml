@@ -1,0 +1,6 @@
+# Minimal JSON-Schema-style rules for ONE function
+type: object
+required: [name, inputs]
+properties:
+  name:   {type: string, pattern: "^[a-z][a-z0-9_]*$"}
+  inputs: {type: array, items: {type: string}}
