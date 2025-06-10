@@ -1,63 +1,51 @@
-# LED-Autogen-POC
+# LED-Autogen-PoC
 
-Minimal schema-driven C code generator + Python simulator.
+Minimal Python-decorator-driven C code generator + Python simulator.
 
 ## Prerequisites
 
-- [Anaconda or Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed
-- Git
+- Anaconda or Miniconda  
+- Git  
 
-## Quick Start with Conda
+## Quick Start
 
-1. **Clone the repo**
+```bash
+git clone git@github.com:<your-org>/led-autogen-poc.git
+cd led-autogen-poc
 
-   ```bash
-   git clone git@github.com:<your-org>/led-autogen-poc.git
-   cd led-autogen-poc
-
-2. **Create & activate the Conda environment**
-
-
-conda create -n led-gen-poc python=3.11
+# 1. Create and activate Conda env
+conda create -n led-gen-poc python=3.11 -y
 conda activate led-gen-poc
 
-
-3. **Install Python dependencies**
-
-
+# 2. Install generator
 pip install -r requirements.txt
 
-4. **Generate the C code from the spec**
+# 3. Generate C
+python generator/generate.py specs.led
 
+# 4. Inspect generated/*.h & *.c
 
-python generator/generate.py specs/led_toggle.spec.yml
-
-
-5. **Run the Python simulator**
-
-
+# 5. Run Python sim
 python sim/run.py
 
 
-## Repo Layout
+## Project Layout
 
-├── schema/                # YAML schemas (function, etc.)
-├── specs/                 # Module specs (*.spec.yml)
-├── templates/             # Jinja2 templates for C, headers, CI
-├── generator/             # Python code-gen script
+led-autogen-poc/
+├── autogen/               # Python decorators & registry
+├── specs/                 # Python-based module specs
+├── templates/             # Jinja2 templates for C
+├── generator/             # Harness that loads specs, renders templates
 ├── sim/                   # Python “hardware” simulator
 ├── generated/             # Auto-generated C code (do not edit)
-└── .github/workflows/ci.yml
+├── requirements.txt
+└── .github/               # CI: regen + drift check + sim
 
 
 
-## Development Workflow
-
-Edit only the schema/, templates/, or specs/ files.
-
-Run python generator/generate.py … to re-generate all C artifacts.
-
-Commit both the updated spec and regenerated code (CI will reject drift).
-
-Push to GitHub & open a PR; CI will validate schemas, regen, lint, and simulate.
-
+## Workflow
+Edit only your specs/*.py with @c_module / @c_function.
+Run python generator/generate.py specs.<module> to update C code.
+Commit both specs and generated code (CI will catch any drift).
+Simulate behavior instantly in Python via sim/run.py.
+All .h/.c files carry an SHA-256 checksum comment. Any manual edits will cause CI to fail.

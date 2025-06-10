@@ -1,8 +1,5 @@
 name: CI
-on:
-  push:
-    branches: [main]
-  pull_request:
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,13 +10,16 @@ jobs:
           python-version: '3.11'
       - name: Install deps
         run: pip install -r requirements.txt
-      - name: Regenerate
-        run: python generator/generate.py specs/led_toggle.spec.yml
-      - name: Check checksum drift
+      - name: Generate C code
+        run: python generator/generate.py specs.led
+      - name: Check drift
         run: |
-          if git status --porcelain | grep -q 'generated/'; then
-            echo "::error ::Generated code differs; run generator locally and commit."
+          if git diff --exit-code generated/; then
+            echo "No drift"
+          else
+            echo "::error ::Generated files out of date! Regenerate and commit."
+            git diff generated/
             exit 1
           fi
-      - name: Run simulator sanity test
+      - name: Run simulation
         run: python sim/run.py

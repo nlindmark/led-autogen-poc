@@ -1,9 +1,16 @@
-#include "{{ module.name }}.h"
-static int LED_STATE = 0;          /* 0 = off */
+#include "{{ module.header }}"
 
-void {{ functions[0].name }}(int {{ functions[0].inputs[0] }})
+static int {{ module.name }}_state = 0;
+
+{% for fn in module.functions %}
+{%- if fn.outputs and fn.outputs|length > 0 -%}
+{{ fn.outputs[0][1] }}
+{%- else -%}
+void
+{%- endif -%}
+{{ fn.name }}({% if fn.inputs %}{% for name, ctype in fn.inputs %}{{ ctype }} {{ name }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}void{% endif %})
 {
-    if ({{ functions[0].inputs[0] }}) {
-        LED_STATE ^= 1;            /* toggle */
-    }
+    /* TODO: implement {{ fn.name }} */
 }
+
+{% endfor %}

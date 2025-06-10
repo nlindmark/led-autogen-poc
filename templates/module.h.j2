@@ -1,6 +1,16 @@
-#ifndef {{ module.name|upper }}_H_
-#define {{ module.name|upper }}_H_
+#ifndef {{ module.name.upper() }}_H_
+#define {{ module.name.upper() }}_H_
 
-void {{ functions[0].name }}(int {{ functions[0].inputs[0] }});
+/* Module: {{ module.name }}  
+   Category: {{ module.category }}  
+   MISRA: {{ module.misra_version }} */
 
-#endif /* {{ module.name|upper }}_H_ */
+{% for fn in module.functions %}
+/**
+ * {{ fn.description }}
+ */
+{{ fn.outputs | length > 0 and fn.outputs[0][1] or 'void' }}
+{{ fn.name }}({% for name, ctype in fn.inputs %}{{ ctype }} {{ name }}{% if not loop.last %}, {% endif %}{% endfor %});
+{% endfor %}
+
+#endif /* {{ module.name.upper() }}_H_ */

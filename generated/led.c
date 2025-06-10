@@ -1,10 +1,15 @@
-// AUTOGEN_SHA256:31c01079171c8690dba7c87521d6273473742f737ddf32e6f1c2b8c57a46122f
+// AUTOGEN_SHA256:ad7ee258bad0a91e57ec37cec9cb7985bac576138c22c0dcf088d34d850e7386
 #include "led.h"
-static int LED_STATE = 0;          /* 0 = off */
 
-void led_toggle(int button_pressed)
+static int led_state = 0;
+
+intled_status(void)
 {
-    if (button_pressed) {
-        LED_STATE ^= 1;            /* toggle */
-    }
+    /* TODO: implement led_status */
 }
+
+voidled_toggle(int button_pressed)
+{
+    /* TODO: implement led_toggle */
+}
+
