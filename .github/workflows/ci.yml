@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Regenerate
+        run: python generator/generate.py specs/led_toggle.spec.yml
+      - name: Check checksum drift
+        run: |
+          if git status --porcelain | grep -q 'generated/'; then
+            echo "::error ::Generated code differs; run generator locally and commit."
+            exit 1
+          fi
+      - name: Run simulator sanity test
+        run: python sim/run.py
